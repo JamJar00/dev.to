@@ -1,16 +1,8 @@
-FROM ruby:2.6.0
-
-# Make nodejs and yarn as dependencies
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+FROM ruby:2.6.0-alpine3.8
 
 # Install dependencies and perform clean-up
-RUN apt-get update -qq && apt-get install -y \
-   build-essential \
-   nodejs \
-   yarn \
- && apt-get -q clean \
+RUN apk update -q \
+ && apk add nodejs yarn build-base git wget gcc postgresql-dev \
  && rm -rf /var/lib/apt/lists
 
 WORKDIR /usr/src/app
